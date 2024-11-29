@@ -1,5 +1,7 @@
 package com.metacoding.authblog._core.config;
 
+import com.metacoding.authblog.user.User;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,7 +22,14 @@ public class SecurityConfig {
                 .formLogin(f ->
                         f.loginPage("/login-form")
                                 .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/"));
+                                //.defaultSuccessUrl("/")
+                                .successHandler((request, response, authentication) -> {
+                                    User user = (User) authentication.getPrincipal();
+                                    HttpSession session = request.getSession();
+                                    session.setAttribute("sessionUser", user);
+
+                                    response.sendRedirect("/");
+                                }));
 
         return http.build();
     }

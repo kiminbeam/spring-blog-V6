@@ -14,15 +14,14 @@ public class BoardController {
     private final HttpSession session;
 
     @GetMapping("/")
-    public String index(@AuthenticationPrincipal User user) {
-        System.out.println("user정보 확인1: " + user.geteUsername());
+    public String index() {
 
         return "index";
     }
 
-    @GetMapping("/board/save-form")
-    public String saveForm() {
-
+    @GetMapping("/s/board/save-form")
+    public String saveForm(@AuthenticationPrincipal User user) {
+        System.out.println("user정보 확인1: " + user.geteUsername());
         return "board/save-form";
     }
 
